@@ -1,12 +1,12 @@
 <?php
 
 include "../config/Configuration.php";
-include "../controller/BaseController.php";
+include "../controller/Controller.php";
 
 class Application {
 
   public static function run() {
     Configuration::init();
-    BaseController::init();
+    Controller::init();
   }
 }
