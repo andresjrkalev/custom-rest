@@ -1,3 +1,5 @@
 <?php
 
-echo $_SERVER['REQUEST_URI'];
+include "app/common/Application.php";
+
+Application::run();
