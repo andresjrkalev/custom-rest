@@ -25,7 +25,7 @@ class Configuration {
   }
 
   public function handleError($number, $description, $file, $line) {
-    $message = $this->formatter->formatString(PATTERN_LOG, $number, $description, $file, $line);
+    $message = FormatUtil::formatString(PATTERN_LOG, $number, $description, $file, $line);
     error_log($message);
   }
 
@@ -35,18 +35,28 @@ class Configuration {
     if (preg_match(REGEX_LOCALHOST, $_SERVER[HTTP_HOST])) {
       $environment = ENVIRONMENT_DEVELOPMENT;
     }
-    $file = $this->formatter->formatString(PATTERN_FILE_INI, $environment);
+    $file = FormatUtil::formatString(PATTERN_FILE_INI, $environment);
     $ini = parse_ini_file($file, false, INI_SCANNER_RAW);
     define(CONSTANT_PROPERTIES, $ini);
   }
   
   public function authenticate() {
+    $path = $_SERVER[REQUEST_URI];
     $headers = apache_request_headers();
+    $headerAuthorization = $headers[HEADER_AUTHORIZATION];
     
-    if (isset($headers[HEADER_AUTHORIZATION])) {
+    if (!preg_match(REGEX_STARTS_WITH_API_VERSION, $path)) {
+      exit(STATUS_CODE_NOT_FOUND);
+    } elseif (isset($headerAuthorization)) {
+      $token = str_replace(PREFIX_AUTHORIZATION, STRING_EMPTY, $headerAuthorization);
       
-    } elseif ($_SERVER[REQUEST_URI]) {
-      
+      if (TokenUtil::validate($token)) {
+        return;
+      }
+    } elseif ($_POST && preg_match(REGEX_ENDS_WITH_AUTHENTICATE, $path)) {
+      $token = TokenUtil::create($_POST);
+      exit($token);
     }
+    exit(STATUS_CODE_NOT_ALLOWED);
   }
 }
