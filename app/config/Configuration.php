@@ -24,19 +24,29 @@ class Configuration {
     set_error_handler(array($this, FUNCTION_HANDLE_ERROR));
   }
 
-public function handleError($number, $description, $file, $line) {
-  $message = $this->formatter->formatString(PATTERN_LOG, $number, $description, $file, $line);
-  error_log($message);
-}
-
-public function setUpProperties() {
-  $environment = ENVIRONMENT_PRODUCTION;
-
-  if (preg_match(REGEX_LOCALHOST, $_SERVER[HTTP_HOST])) {
-    $environment = ENVIRONMENT_DEVELOPMENT;
+  public function handleError($number, $description, $file, $line) {
+    $message = $this->formatter->formatString(PATTERN_LOG, $number, $description, $file, $line);
+    error_log($message);
   }
-  $file = $this->formatter->formatString(PATTERN_FILE_INI, $environment);
-      $ini = parse_ini_file($file, false, INI_SCANNER_RAW);
-      define(CONSTANT_PROPERTIES, $ini);
+
+  public function setUpProperties() {
+    $environment = ENVIRONMENT_PRODUCTION;
+
+    if (preg_match(REGEX_LOCALHOST, $_SERVER[HTTP_HOST])) {
+      $environment = ENVIRONMENT_DEVELOPMENT;
+    }
+    $file = $this->formatter->formatString(PATTERN_FILE_INI, $environment);
+    $ini = parse_ini_file($file, false, INI_SCANNER_RAW);
+    define(CONSTANT_PROPERTIES, $ini);
+  }
+  
+  public function authenticate() {
+    $headers = apache_request_headers();
+    
+    if (isset($headers[HEADER_AUTHORIZATION])) {
+      
+    } elseif ($_SERVER[REQUEST_URI]) {
+      
+    }
   }
 }
