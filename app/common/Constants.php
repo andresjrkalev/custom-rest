@@ -19,6 +19,8 @@ const ENVIRONMENT_PRODUCTION = "production";
 const FORMATTER_LANG_ET = "et_EE";
 const FUNCTION_HANDLE_ERROR = "handleError";
 
+const HEADER_AUTHORIZATION = "Authorization";
+
 const LOCATION_LOGS = "app/logs.txt";
 
 const METHOD_GETTER = "get{0}";
@@ -31,13 +33,18 @@ const PATTERN_CONTROLLER = "{0}{1}";
 const PATTERN_FILE_INI = "{0}.ini";
 const PATTERN_FILE_PHP = "{0}.php";
 const PATTERN_LOG = "<b>Error:</b> [nr {0}] {1} in file {2} on line {3}";
+const PREFIX_AUTHORIZATION = "Bearer";
 
 const QUERY_SELECT_CRITERIA = "SELECT * FROM {0} WHERE {1} AND deleted IS NULL";
 const QUERY_UPDATE = "UPDATE {0} SET {1} WHERE id = ?";
 
+const REGEX_ENDS_WITH_AUTHENTICATE = '/authenticate$/';
 const REGEX_LOCALHOST = "/localhost|127.0.0.1/";
+const REGEX_STARTS_WITH_API_VERSION = "/^\/api/v/";
 
 const STRING_EMPTY = "";
 const SUFFIX_CONTROLLER = "Controller";
+const STATUS_CODE_NOT_ALLOWED = 401;
+const STATUS_CODE_NOT_FOUND = 404
 const SYMBOL_COMMA = ",";
 
