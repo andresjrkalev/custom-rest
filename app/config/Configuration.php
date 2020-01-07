@@ -11,7 +11,14 @@ class Configuration {
         $parameters = $reflectionMethod->getParameters();
 
         if (count($parameters) == 0) {
-            $this->$method();
+          $value = $this->$method();
+          
+          if (isset($value)) {
+            $type = get_class($value);
+            $key = lcfirst($type);
+            $GLOBALS[$key] = $value;
+            extract($GLOBALS);
+          }
         }
       }
     }
@@ -58,5 +65,9 @@ class Configuration {
       exit($token);
     }
     exit(STATUS_CODE_NOT_ALLOWED);
+  }
+  
+  public function dataSource() {
+    return new Repository();
   }
 }
