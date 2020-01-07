@@ -1,12 +1,10 @@
 <?php
 
-class UserService extends BaseService {
+class UserService {
 
-  public function __construct() {
-    parent::__construct();
-  }
-
-  public function findById($id) {
-    return $repository->findById($id);
+  public function findByUsername($username) {
+    $criteria = new Criteria(User::class);
+    $criteria->equals(PROPERTY_USERNAME, $username);
+    return $repository->findByCriteria($criteria);
   }
 }
